@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
 	View,
-	Text
+	Text,
+	Image
 } from 'react-native';
 
 // CSS
@@ -23,17 +24,7 @@ class Layout extends Component {
 	}
 	render() {
 		return (
-			<ScrollableTabView style={{marginTop: 50}} renderTabBar={() => <ScrollableTabBar />}>
-				<View tabLabel="Explore" style={CSS.row}>
-					<Explore></Explore>
-				</View>
-				<View tabLabel="Hunt Orders" style={CSS.row}>
-					<Text>Hunt Order</Text>
-				</View>
-				<View tabLabel="History Orders" style={CSS.row}>
-					<Text>History Order</Text>
-				</View>
-			</ScrollableTabView>
+			<Explore navigator={this.props.navigator}></Explore>
 		)
 	}	
 }

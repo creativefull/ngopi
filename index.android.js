@@ -6,7 +6,8 @@ import {
 	View,
 	TouchableOpacity,
 	Navigator,
-	TextInput
+	TextInput,
+	BackAndroid
 } from 'react-native';
 
 // STYLES
@@ -20,7 +21,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // COMPONENTS
 import Layout from './android/src/components/layout.component';
 import ControlPanel from './android/src/components/controlpanel.component';
+import Detail from './android/src/components/detail.component';
 
+let navigator;
 export default class ngopi extends Component {
 	constructor(props) {
 		super(props);
@@ -57,7 +60,7 @@ export default class ngopi extends Component {
 				return(
 					<View>
 						<TouchableOpacity>
-							<Text style={NAVBARSTYLE.title}>BLANTIK</Text>
+							<Text style={NAVBARSTYLE.title}>{route.title}</Text>
 						</TouchableOpacity>
 					</View>
 				)
@@ -93,7 +96,7 @@ export default class ngopi extends Component {
 					<ControlPanel/>
 				}>
 				<Navigator
-					initialRoute = {{id : 'home'}}
+					initialRoute = {{link : 'home', title : "NGOPI"}}
 					navigationBar = {
 						<Navigator.NavigationBar routeMapper={navbar} style={NAVBARSTYLE.navbar}/>
 					}
@@ -104,11 +107,22 @@ export default class ngopi extends Component {
 
 	renderScene(route, navigator) {
 		_navigator = navigator;
-		switch(route.id) {
+		switch(route.link) {
 			case "home" : return (
-				<Layout></Layout>
+				<Layout navigator={navigator} title={route.title}></Layout>
+			);
+			case "detail" : return (
+				<Detail id={route.id} title={route.title} navigator={navigator}></Detail>
 			)
 		}
 	}
 }
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+	if (_navigator.getCurrentRoutes().length === 1  ) {
+		return false;
+	}
+	_navigator.pop();
+	return true;
+});
 AppRegistry.registerComponent('ngopi', () => ngopi);
